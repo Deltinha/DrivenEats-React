@@ -75,6 +75,7 @@ export default function Order({updateBill, billArray}){
         }
     }
 
+    isOrderButtonEnabled = changeOrderButtonState();
 
     function changeOrderButtonState(){
 
@@ -102,23 +103,17 @@ export default function Order({updateBill, billArray}){
         });
 
         if (!isMainCourseSelected || !isDrinkSelected || !isDessertSelected) {
-            setButtonText('Selectione os 3 itens para fechar o pedido');
-            setGreenButton('');
-            isOrderButtonEnabled = false;
+            return false;
         }
 
         if (isMainCourseSelected && isDrinkSelected && isDessertSelected) {
-            setButtonText('Fechar pedido');
-            setGreenButton('place-order__button--green');
-            isOrderButtonEnabled = true;
+            return true;
         }
     }
 
-    setInterval(changeOrderButtonState, 1000);
-
     return (
         <div className='place-order'>
-            <OrderButton sendMessage={sendMessage} greenButton={greenButton}>{buttonText}</OrderButton>
+            <OrderButton sendMessage={sendMessage} greenButton={isOrderButtonEnabled ? 'place-order__button--green' : '' }>{isOrderButtonEnabled ? 'Fechar pedido' : 'Selectione os 3 itens para fechar o pedido'}</OrderButton>
         </div>
     );
 }
