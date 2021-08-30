@@ -5,64 +5,11 @@ let isDrinkSelected = false;
 let isDessertSelected = false;
 let isOrderButtonEnabled = false;
 
-let globalBillArray= [];
 
-function sendMessage(){
-
-    if (isOrderButtonEnabled) {
-        let newBillArray = globalBillArray.filter((element) => (element.qty !== 0 ));
-
-        let selectedMainCourses;
-        let selectedDrinks;
-        let selectedDesserts;
-        let totalValor = 0;
-
-        newBillArray.forEach(element => {
-                totalValor += element.multipleUnitsPrice;
-        });
-
-        selectedMainCourses = newBillArray.filter((item) => (item.category === 'mainCourse'));
-        selectedDrinks = newBillArray.filter((item) => (item.category === 'drink'));
-        selectedDesserts = newBillArray.filter((item) => (item.category === 'dessert'));
-
-        let mainCoursesString = '';
-        let drinksString = '';
-        let dessertsString = '';
-
-        selectedMainCourses.forEach(element => {
-                mainCoursesString = mainCoursesString + `${element.name} (${element.qty}x), `
-        });
-
-        selectedDrinks.forEach(element => {
-                drinksString = drinksString + `${element.name} (${element.qty}x), `
-        });
-
-        selectedDesserts.forEach(element => {
-                dessertsString = dessertsString + `${element.name} (${element.qty}x), `
-        });
-
-
-
-        let message = `Olá, gostaria de fazer o pedido:
-        \n- Prato:  ${mainCoursesString}
-        \n- Bebida: ${drinksString}
-        \n- Sobremesa: ${dessertsString}
-        \nTotal: R$ ${totalValor.toFixed(2)}`;
- 
-
-        
-        let waLink = "https://wa.me/55086988259199?text=" + encodeURIComponent(message);
-
-        window.open(waLink);
-    }
-    else {
-        return false;
-    }
-}
 
 function OrderButton(props){
     return(
-            <div onClick={sendMessage} className={`place-order__button ${props.greenButton}`}>
+            <div onClick={props.sendMessage} className={`place-order__button ${props.greenButton}`}>
                 <span className="place-order__button__text">{props.children}</span>
             </div>
     );
@@ -75,7 +22,58 @@ export default function Order({updateBill, billArray}){
     const [greenButton, setGreenButton] = React.useState('');
 
 
-    globalBillArray = billArray;
+    function sendMessage(){
+
+        if (isOrderButtonEnabled) {
+            let newBillArray = billArray.filter((element) => (element.qty !== 0 ));
+    
+            let selectedMainCourses;
+            let selectedDrinks;
+            let selectedDesserts;
+            let totalValor = 0;
+    
+            newBillArray.forEach(element => {
+                    totalValor += element.multipleUnitsPrice;
+            });
+    
+            selectedMainCourses = newBillArray.filter((item) => (item.category === 'mainCourse'));
+            selectedDrinks = newBillArray.filter((item) => (item.category === 'drink'));
+            selectedDesserts = newBillArray.filter((item) => (item.category === 'dessert'));
+    
+            let mainCoursesString = '';
+            let drinksString = '';
+            let dessertsString = '';
+    
+            selectedMainCourses.forEach(element => {
+                    mainCoursesString = mainCoursesString + `${element.name} (${element.qty}x), `
+            });
+    
+            selectedDrinks.forEach(element => {
+                    drinksString = drinksString + `${element.name} (${element.qty}x), `
+            });
+    
+            selectedDesserts.forEach(element => {
+                    dessertsString = dessertsString + `${element.name} (${element.qty}x), `
+            });
+    
+    
+    
+            let message = `Olá, gostaria de fazer o pedido:
+            \n- Prato:  ${mainCoursesString}
+            \n- Bebida: ${drinksString}
+            \n- Sobremesa: ${dessertsString}
+            \nTotal: R$ ${totalValor.toFixed(2)}`;
+     
+    
+            
+            let waLink = "https://wa.me/55086988259199?text=" + encodeURIComponent(message);
+    
+            window.open(waLink);
+        }
+        else {
+            return false;
+        }
+    }
 
 
     function changeOrderButtonState(){
@@ -116,11 +114,11 @@ export default function Order({updateBill, billArray}){
         }
     }
 
-    //setInterval(changeOrderButtonState, 1000);
+    setInterval(changeOrderButtonState, 1000);
 
     return (
         <div className='place-order'>
-            <OrderButton billArray={billArray} greenButton={greenButton}>{buttonText}</OrderButton>
+            <OrderButton sendMessage={sendMessage} greenButton={greenButton}>{buttonText}</OrderButton>
         </div>
     );
 }
