@@ -1,11 +1,11 @@
 import FoodSection from "./food-section";
 
-export default function Food(){
+export default function Food({updateBill}){
     return(
         <div className='food'>
-            <FoodSection section='mainCourse'/>
-            <FoodSection section='drink'/>
-            <FoodSection section='dessert'/>
+            <FoodSection updateBill={updateBill} section='mainCourse'/>
+            <FoodSection updateBill={updateBill} section='drink'/>
+            <FoodSection updateBill={updateBill} section='dessert'/>
         </div>
     );
 }

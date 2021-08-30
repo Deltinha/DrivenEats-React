@@ -1,5 +1,5 @@
 import React from "react";
-import {updateBill} from "./update-bill";
+
 
 export default function FoodCard(props){
 
@@ -12,22 +12,30 @@ export default function FoodCard(props){
             setSelected('food__card__selected');
             setItemQty(1);
 
-            updateBill(1, props.name, props.price, props.category)
+            props.updateBill(props.name, itemQty+1, props.price, props.category);
+
+            
        }
     }
     
     function addItem(){
         setItemQty(itemQty + 1);
+
+        props.updateBill(props.name, itemQty+1, props.price, props.category);
+
         
-        updateBill(itemQty + 1, props.name, props.price, props.category);
+        
 
 
     }
 
     function removeItem(){
-        updateBill(itemQty - 1, props.name, props.price, props.category);
+        props.updateBill(props.name, itemQty - 1, props.price, props.category);
+
+        
 
         if (itemQty === 1) {
+            setItemQty(0);
             setSelected('');
         }
         else {

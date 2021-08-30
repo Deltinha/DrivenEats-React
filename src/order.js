@@ -1,15 +1,16 @@
 import React from 'react';
-import { billArray } from './update-bill';
 
 let isMainCourseSelected = false;
 let isDrinkSelected = false;
 let isDessertSelected = false;
 let isOrderButtonEnabled = false;
 
+let globalBillArray= [];
+
 function sendMessage(){
 
     if (isOrderButtonEnabled) {
-        let newBillArray = billArray.filter((element) => (element.qty !== 0 ));
+        let newBillArray = globalBillArray.filter((element) => (element.qty !== 0 ));
 
         let selectedMainCourses;
         let selectedDrinks;
@@ -68,13 +69,13 @@ function OrderButton(props){
 }
 
 
-export default function Order(){
+export default function Order({updateBill, billArray}){
 
     const [buttonText, setButtonText] = React.useState('Selectione os 3 itens para fechar o pedido');
     const [greenButton, setGreenButton] = React.useState('');
 
 
-    
+    globalBillArray = billArray;
 
 
     function changeOrderButtonState(){
@@ -115,11 +116,11 @@ export default function Order(){
         }
     }
 
-    setInterval(changeOrderButtonState, 1000);
+    //setInterval(changeOrderButtonState, 1000);
 
     return (
         <div className='place-order'>
-            <OrderButton greenButton={greenButton}>{buttonText}</OrderButton>
+            <OrderButton billArray={billArray} greenButton={greenButton}>{buttonText}</OrderButton>
         </div>
     );
 }

@@ -107,6 +107,7 @@ export default function FoodPicker(props){
                         description={item.description}
                         price={item.price}
                         category={props.section}
+                        updateBill={props.updateBill} 
                     />))
                 }
             </div>
