@@ -7,7 +7,7 @@ import Order from "./order";
 import './css/reset.css';
 import './css/styles.css';
 
-function App(){
+export default function App(){
   
     return (
     <>
